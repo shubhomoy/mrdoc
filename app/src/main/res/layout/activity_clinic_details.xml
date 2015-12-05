@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.bitslate.mrdoc.ClinicDetailsActivity">
+
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/action_bar" />
+
+
+    <TextView
+        android:id="@+id/clinic_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/toolbar"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp"
+        android:text="Clinic Name"
+        android:textSize="25sp" />
+
+    <TextView
+        android:id="@+id/clinic_address"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/clinic_name"
+        android:layout_centerHorizontal="true"
+        android:text="Clinic Address"
+        android:textSize="18sp" />
+
+
+    <LinearLayout
+        android:id="@+id/map_view"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_below="@+id/clinic_address"
+        android:layout_margin="16dp"
+        android:background="#dedede"
+        android:orientation="horizontal" />
+
+
+    <TextView
+        android:id="@+id/clinic_details"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/map_view"
+        android:layout_centerHorizontal="true"
+        android:text="Details of the clinic...\n..are given here\n
+        Details of the clinic...\n..are given here\n Details of the clinic...\n..are given here"
+        android:textSize="18sp" />
+
+    <Button
+        android:id="@+id/book_ticket"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="16dp"
+        android:background="@android:color/transparent"
+        android:text="Book Appointment" />
+</RelativeLayout>
