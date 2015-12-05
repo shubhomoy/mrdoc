@@ -16,7 +16,7 @@ public class Clinic {
     public String photo;
     public ArrayList<Doctor> doctors;
     public ArrayList<Facility> facilities;
-    
+
     public class Facility {
         public String facility;
     }
