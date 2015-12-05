@@ -40,6 +40,7 @@ public class MakeAppointment extends AppCompatActivity {
     Toolbar toolbar;
     Calendar calendar;
     int year, month, day;
+    int docId, clinicId;
 
     private DatePickerDialog.OnDateSetListener pickerListener = new DatePickerDialog.OnDateSetListener() {
         @Override
@@ -67,6 +68,9 @@ public class MakeAppointment extends AppCompatActivity {
         day = calendar.get(Calendar.DAY_OF_MONTH);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Make Appointment");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        docId = getIntent().getIntExtra("docId", 0);
+        clinicId = getIntent().getIntExtra("clinicId", 0);
     }
 
     boolean checkInput() {
@@ -85,16 +89,25 @@ public class MakeAppointment extends AppCompatActivity {
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(MakeAppointment.this);
-                builder.setTitle("Success");
-                builder.setMessage("Your appointment is fixed!");
-                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        finish();
+                try {
+                    JSONObject object = new JSONObject(response);
+                    if(!object.getString("msg").equals("invalid")) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(MakeAppointment.this);
+                        builder.setTitle("Success");
+                        builder.setMessage("Your appointment is fixed!");
+                        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                finish();
+                            }
+                        });
+                        builder.create().show();
+                    }else {
+                        Toast.makeText(MakeAppointment.this, "Invalid OTP", Toast.LENGTH_LONG).show();
                     }
-                });
-                builder.create().show();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
         }, new Response.ErrorListener() {
             @Override
@@ -146,6 +159,9 @@ public class MakeAppointment extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                break;
             case R.id.done:
                 if(checkInput()) {
                     String url = Config.apiUrl+"/appointment";
@@ -190,9 +206,11 @@ public class MakeAppointment extends AppCompatActivity {
                             HashMap<String, String> params = new HashMap<String, String>();
                             params.put("name", nameEt.getText().toString());
                             params.put("email", emailEt.getText().toString());
-                            params.put("appointment_time", dateEt.getText().toString());
+                            params.put("time", dateEt.getText().toString());
                             params.put("phone", phoneEt.getText().toString());
                             params.put("description", descriptionEt.getText().toString());
+                            params.put("doctor_id", String.valueOf(docId));
+                            params.put("clinic_id", String.valueOf(clinicId));
                             return params;
                         }
                     };

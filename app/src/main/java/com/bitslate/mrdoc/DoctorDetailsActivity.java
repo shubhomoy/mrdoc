@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -56,15 +57,14 @@ public class DoctorDetailsActivity extends AppCompatActivity {
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
         doctorImage = (ImageView) findViewById(R.id.doctor_photo);
         docName = (TextView) findViewById(R.id.doc_name);
         docAddress = (TextView) findViewById(R.id.doctor_address);
         docPhone = (TextView) findViewById(R.id.doctor_phone);
         docDesc = (TextView) findViewById(R.id.doctor_details);
         regId = (TextView) findViewById(R.id.doc_reg_id);
-
         showCinics = (Button) findViewById(R.id.show_clinics);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     private void setShowCinics(final ArrayList<Clinic> clinics) {
@@ -136,5 +136,15 @@ public class DoctorDetailsActivity extends AppCompatActivity {
             }
         });
         VolleySingleton.getInstance().getRequestQueue().add(request);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

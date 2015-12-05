@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -49,6 +51,15 @@ public class ClinicDetailsActivity extends AppCompatActivity {
 
         setClinicDetails(clinicId);
 
+        bookTicket.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(ClinicDetailsActivity.this, MakeAppointment.class);
+                i.putExtra("docId", doctorId);
+                i.putExtra("clinicId", clinicId);
+                startActivity(i);
+            }
+        });
     }
 
     private void instantiate() {
@@ -61,6 +72,7 @@ public class ClinicDetailsActivity extends AppCompatActivity {
         clinicDetails= (TextView) findViewById(R.id.clinic_details);
         facilitiesProvided=new ArrayList<String>();
         clinicEmail= (TextView) findViewById(R.id.email);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
     public void setClinicDetails(int id){
         String url = Config.apiUrl+"/clinic/"+id;
@@ -106,5 +118,15 @@ public class ClinicDetailsActivity extends AppCompatActivity {
             }
         });
         VolleySingleton.getInstance().getRequestQueue().add(request);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
