@@ -2,6 +2,7 @@ package com.bitslate.mrdoc.MrDocAdapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -63,14 +64,13 @@ public class SearchAdapters extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
         private TextView docName;
         private TextView docClinic;
-        private LinearLayout root;
+        private CardView root;
 
         public DoctorViewHolder(View itemView) {
             super(itemView);
-
             docName = (TextView) itemView.findViewById(R.id.doc_name);
             docClinic = (TextView) itemView.findViewById(R.id.doc_clinic);
-            root= (LinearLayout) itemView.findViewById(R.id.row);
+            root= (CardView) itemView.findViewById(R.id.row);
 
         }
     }
