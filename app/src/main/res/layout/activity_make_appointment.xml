@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="com.bitslate.mrdoc.MakeAppointment">
+
+    <EditText
+        android:paddingTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@id/email"
+        android:layout_below="@+id/name"
+        android:hint="Enter your e-mail" />
+    <EditText
+        android:paddingTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/phone"
+        android:hint="Enter your number"
+        android:layout_below="@id/email"
+        android:inputType="number"/>
+    <EditText
+        android:paddingTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/name"
+        android:hint="Enter your name"
+        android:layout_below="@+id/toolbar" />
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter your problem"
+        android:layout_below="@+id/phone"
+        android:id="@+id/problem"
+        />
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Set Date"
+        android:layout_below="@+id/problem"
+        android:id="@+id/date" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Confirm"
+        android:id="@+id/confirm"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/problem"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="set time"
+        android:id="@+id/time"
+        android:layout_alignBottom="@+id/confirm"
+        android:layout_toRightOf="@+id/confirm"
+        android:layout_toEndOf="@+id/confirm" />
+
+</RelativeLayout>
