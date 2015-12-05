@@ -1,5 +1,6 @@
 package com.bitslate.mrdoc;
 
+import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -10,9 +11,11 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -23,6 +26,10 @@ import com.bitslate.mrdoc.MrDocUtilities.VolleySingleton;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
+
 public class MakeAppointment extends AppCompatActivity {
 
     EditText nameEt;
@@ -31,6 +38,21 @@ public class MakeAppointment extends AppCompatActivity {
     EditText dateEt;
     EditText descriptionEt;
     Toolbar toolbar;
+    Calendar calendar;
+    int year, month, day;
+
+    private DatePickerDialog.OnDateSetListener pickerListener = new DatePickerDialog.OnDateSetListener() {
+        @Override
+        public void onDateSet(DatePicker view, int selectedYear,
+                              int selectedMonth, int selectedDay) {
+
+            year  = selectedYear;
+            month = selectedMonth;
+            day   = selectedDay;
+            dateEt.setText(String.valueOf(year)+"-"+String.valueOf(month+1)+"-"+String.valueOf(day));
+
+        }
+    };
 
     void instantiate() {
         nameEt = (EditText)findViewById(R.id.name);
@@ -39,6 +61,10 @@ public class MakeAppointment extends AppCompatActivity {
         emailEt = (EditText)findViewById(R.id.email_et);
         descriptionEt = (EditText)findViewById(R.id.problem);
         toolbar = (Toolbar)findViewById(R.id.toolbar);
+        calendar = Calendar.getInstance();
+        year = calendar.get(Calendar.YEAR);
+        month = calendar.get(Calendar.MONTH);
+        day = calendar.get(Calendar.DAY_OF_MONTH);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Make Appointment");
     }
@@ -54,7 +80,7 @@ public class MakeAppointment extends AppCompatActivity {
             return false;
     }
 
-    void verifyAppointment(String otp) {
+    void verifyAppointment(final String otp) {
         String url = Config.apiUrl + "/appointment/verify";
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
@@ -75,7 +101,16 @@ public class MakeAppointment extends AppCompatActivity {
             public void onErrorResponse(VolleyError error) {
                 Toast.makeText(MakeAppointment.this, "Invalid OTP", Toast.LENGTH_LONG).show();
             }
-        });
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                HashMap params = new HashMap();
+                params.put("otp", otp);
+                params.put("email", emailEt.getText().toString());
+                params.put("phone", phoneEt.getText().toString());
+                return params;
+            }
+        };
         VolleySingleton.getInstance().getRequestQueue().add(stringRequest);
     }
 
@@ -84,6 +119,22 @@ public class MakeAppointment extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_make_appointment);
         instantiate();
+
+        dateEt.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean b) {
+                if (b) {
+                    new DatePickerDialog(MakeAppointment.this, pickerListener, year, month, day).show();
+                }
+            }
+        });
+
+        dateEt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new DatePickerDialog(MakeAppointment.this, pickerListener, year, month, day).show();
+            }
+        });
     }
 
     @Override
@@ -133,7 +184,18 @@ public class MakeAppointment extends AppCompatActivity {
                         public void onErrorResponse(VolleyError error) {
                             Log.d("option", error.toString());
                         }
-                    });
+                    }){
+                        @Override
+                        protected Map<String, String> getParams() throws AuthFailureError {
+                            HashMap<String, String> params = new HashMap<String, String>();
+                            params.put("name", nameEt.getText().toString());
+                            params.put("email", emailEt.getText().toString());
+                            params.put("appointment_time", dateEt.getText().toString());
+                            params.put("phone", phoneEt.getText().toString());
+                            params.put("description", descriptionEt.getText().toString());
+                            return params;
+                        }
+                    };
                     VolleySingleton.getInstance().getRequestQueue().add(stringRequest);
                 }
                 break;
