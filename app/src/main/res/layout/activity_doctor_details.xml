@@ -89,7 +89,7 @@
             android:layout_below="@+id/cardView"
             android:layout_centerHorizontal="true"
             android:layout_gravity="center_horizontal"
-            android:background="@android:color/transparent"
+            android:background="?attr/selectableItemBackground"
             android:text="Show Clinics"
             android:textSize="15sp" />
 
@@ -115,7 +115,7 @@
                     android:id="@+id/doc_reg_id"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="16dp"
+                    android:padding="16dp"
                     android:text="registration id"
                     android:textSize="15sp" />
 
@@ -132,7 +132,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/view1"
-                    android:layout_margin="16dp"
+                    android:padding="16dp"
                     android:autoLink="email"
                     android:text="abc.xyz@gmail.com"
                     android:textSize="15sp" />

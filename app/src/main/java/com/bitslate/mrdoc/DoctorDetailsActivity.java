@@ -57,6 +57,7 @@ public class DoctorDetailsActivity extends AppCompatActivity {
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("Doctor");
         doctorImage = (ImageView) findViewById(R.id.doctor_photo);
         docName = (TextView) findViewById(R.id.doc_name);
         docAddress = (TextView) findViewById(R.id.doctor_address);

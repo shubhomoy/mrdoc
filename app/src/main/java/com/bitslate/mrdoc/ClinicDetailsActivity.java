@@ -2,12 +2,11 @@ package com.bitslate.mrdoc;
 
 import android.app.AlertDialog;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -24,7 +23,6 @@ import com.bitslate.mrdoc.MrDocUtilities.Config;
 import com.bitslate.mrdoc.MrDocUtilities.VolleySingleton;
 import com.google.gson.Gson;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -33,8 +31,8 @@ import java.util.ArrayList;
 public class ClinicDetailsActivity extends AppCompatActivity {
 
     private Toolbar toolbar;
-    private Button bookTicket,facilities;
-    private TextView clinicName, clinicAdd, clinicDetails,clinicEmail;
+    private Button bookTicket, facilities;
+    private TextView clinicName, clinicAdd, clinicDetails, clinicEmail;
     ArrayList<String> facilitiesProvided;
     private static int clinicId, doctorId;
 
@@ -45,9 +43,9 @@ public class ClinicDetailsActivity extends AppCompatActivity {
 
         instantiate();
 
-        Intent intent=getIntent();
-        doctorId=intent.getIntExtra("docId",0);
-        clinicId=intent.getIntExtra("clinicId",0);
+        Intent intent = getIntent();
+        doctorId = intent.getIntExtra("docId", 0);
+        clinicId = intent.getIntExtra("clinicId", 0);
 
         setClinicDetails(clinicId);
 
@@ -63,27 +61,29 @@ public class ClinicDetailsActivity extends AppCompatActivity {
     }
 
     private void instantiate() {
-        toolbar= (Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        facilities= (Button) findViewById(R.id.facilities);
-        bookTicket= (Button) findViewById(R.id.book_ticket);
-        clinicName= (TextView) findViewById(R.id.clinic_name);
-        clinicAdd= (TextView) findViewById(R.id.clinic_address);
-        clinicDetails= (TextView) findViewById(R.id.clinic_details);
-        facilitiesProvided=new ArrayList<String>();
-        clinicEmail= (TextView) findViewById(R.id.email);
+        facilities = (Button) findViewById(R.id.facilities);
+        bookTicket = (Button) findViewById(R.id.book_ticket);
+        clinicName = (TextView) findViewById(R.id.clinic_name);
+        clinicAdd = (TextView) findViewById(R.id.clinic_address);
+        clinicDetails = (TextView) findViewById(R.id.clinic_details);
+        facilitiesProvided = new ArrayList<String>();
+        clinicEmail = (TextView) findViewById(R.id.email);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
-    public void setClinicDetails(int id){
-        String url = Config.apiUrl+"/clinic/"+id;
-        JsonObjectRequest request =new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+
+    public void setClinicDetails(int id) {
+        String url = Config.apiUrl + "/clinic/" + id;
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-                Log.d("option",response.toString());
+                Log.d("option", response.toString());
                 try {
                     Gson gson = new Gson();
-                        final Clinic clinic= gson.fromJson(response.getString("clinic"),Clinic.class);
+                    final Clinic clinic = gson.fromJson(response.getString("clinic"), Clinic.class);
                     clinicName.setText(clinic.name);
+                    getSupportActionBar().setTitle(clinic.name);
                     clinicAdd.setText(clinic.address);
                     clinicDetails.setText(clinic.description);
                     clinicEmail.setText(clinic.email);
