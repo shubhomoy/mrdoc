@@ -34,7 +34,7 @@ public class DoctorDetailsActivity extends AppCompatActivity {
 
     Toolbar toolbar;
     private ImageView doctorImage;
-    private TextView docName, docAddress, docPhone, docDesc, regId;
+    private TextView docName, docAddress, docPhone, docDesc, regId, docEmail;
     private Button showCinics;
     private static int doctorId;
 
@@ -62,6 +62,7 @@ public class DoctorDetailsActivity extends AppCompatActivity {
         docAddress = (TextView) findViewById(R.id.doctor_address);
         docPhone = (TextView) findViewById(R.id.doctor_phone);
         docDesc = (TextView) findViewById(R.id.doctor_details);
+        docEmail= (TextView) findViewById(R.id.doc_email);
         regId = (TextView) findViewById(R.id.doc_reg_id);
 
         showCinics = (Button) findViewById(R.id.show_clinics);
@@ -109,9 +110,11 @@ public class DoctorDetailsActivity extends AppCompatActivity {
                     Gson gson = new Gson();
                     final Doctor doctor = gson.fromJson(response.getString("doctor"), Doctor.class);
 
-                    docName.setText("Dr. " + doctor.name);
+                    docName.setText(doctor.name);
                     docAddress.setText("" + doctor.address);
                     regId.setText("Registrtion ID: " + doctor.reg_id);
+                    docEmail.setText(doctor.email);
+
                     if (doctor.contacts.size() > 0)
                         docPhone.setText(doctor.contacts.get(0).contact_no);
                     else
