@@ -1,14 +1,17 @@
 package com.bitslate.mrdoc;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -30,8 +33,11 @@ public class SearchActivity extends AppCompatActivity {
     private RecyclerView searchView;
     private Toolbar toolbar;
     private EditText search;
+    private TextView emptyText;
+    private ImageView emptyImage;
     SearchAdapters searchAdapters;
     ArrayList<Doctor> doctors_name;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,51 +46,71 @@ public class SearchActivity extends AppCompatActivity {
         search.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
 
+                if (s.toString().isEmpty()) {
+                    emptyImage.setVisibility(View.VISIBLE);
+                    emptyText.setVisibility(View.VISIBLE);
+                    emptyText.setText("Search any Doctor,\nClinics or Specialization");
+                    doctors_name.removeAll(doctors_name);
+                    doctors_name.clear();
+
+                } else {
+                    emptyImage.setVisibility(View.GONE);
+                    emptyText.setVisibility(View.GONE);
+                    fetchDoctorNames(s);
+                }
+
             }
 
             @Override
             public void afterTextChanged(Editable s) {
-
-                fetchDoctorNames(s);
             }
         });
 
 
     }
-    private void intantiate(){
-        toolbar= (Toolbar) findViewById(R.id.toolbar);
+
+    private void intantiate() {
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        searchView= (RecyclerView) findViewById(R.id.search_result);
+        emptyText = (TextView) findViewById(R.id.empty_text);
+        emptyImage = (ImageView) findViewById(R.id.empty);
+        searchView = (RecyclerView) findViewById(R.id.search_result);
         searchView.setHasFixedSize(true);
         searchView.setLayoutManager(new LinearLayoutManager(this));
-        search= (EditText) toolbar.findViewById(R.id.search);
+        search = (EditText) toolbar.findViewById(R.id.search);
         doctors_name = new ArrayList<>();
-        searchAdapters = new SearchAdapters(this,doctors_name);
+        searchAdapters = new SearchAdapters(this, doctors_name);
         searchView.setAdapter(searchAdapters);
     }
-    public void fetchDoctorNames(CharSequence sequence){
+
+    public void fetchDoctorNames(CharSequence sequence) {
         doctors_name.removeAll(doctors_name);
         doctors_name.clear();
-        Log.d("option_se",sequence.toString());
-        String url = Config.apiUrl+"/search/doctors/?q="+sequence.toString();
-        JsonObjectRequest request =new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+        Log.d("option_se", sequence.toString());
+        String url = Config.apiUrl + "/search/doctors/?q=" + sequence.toString();
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 try {
                     JSONArray array = new JSONArray(response.getString("data"));
-                    Gson gson =new Gson();
-                    for(int i=0;i<array.length();i++){
-                        final Doctor doctor =  gson.fromJson(array.getJSONObject(i).toString(),Doctor.class);
+                    Gson gson = new Gson();
+                    for (int i = 0; i < array.length(); i++) {
+                        final Doctor doctor = gson.fromJson(array.getJSONObject(i).toString(), Doctor.class);
                         doctors_name.add(doctor);
-                        Log.d("option_name",doctors_name.get(0).name);
+                        Log.d("option_name", doctors_name.get(0).name);
                     }
                     searchAdapters.notifyDataSetChanged();
+
+                    if (array.length() == 0) {
+                        emptyImage.setVisibility(View.GONE);
+                        emptyText.setVisibility(View.VISIBLE);
+                        emptyText.setText("No results found!");
+                    }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

@@ -1,6 +1,7 @@
 package com.bitslate.mrdoc;
 
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -33,7 +34,8 @@ public class ClinicDetailsActivity extends AppCompatActivity {
     private Button bookTicket,facilities;
     private TextView clinicName, clinicAdd, clinicDetails,clinicEmail;
     ArrayList<String> facilitiesProvided;
-    Clinic clinic;
+    private static int clinicId, doctorId;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,7 +43,11 @@ public class ClinicDetailsActivity extends AppCompatActivity {
 
         instantiate();
 
-        setClinicDetails(1);
+        Intent intent=getIntent();
+        doctorId=intent.getIntExtra("docId",0);
+        clinicId=intent.getIntExtra("clinicId",0);
+
+        setClinicDetails(clinicId);
 
     }
 

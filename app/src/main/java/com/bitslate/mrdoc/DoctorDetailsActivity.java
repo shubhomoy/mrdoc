@@ -1,12 +1,14 @@
 package com.bitslate.mrdoc;
 
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -34,6 +36,7 @@ public class DoctorDetailsActivity extends AppCompatActivity {
     private ImageView doctorImage;
     private TextView docName, docAddress, docPhone, docDesc, regId;
     private Button showCinics;
+    private static int doctorId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,8 +45,9 @@ public class DoctorDetailsActivity extends AppCompatActivity {
 
         instantiate();
 
-        setDocdetails(1);
-
+        Intent intent = getIntent();
+        doctorId = intent.getIntExtra("docId", 0);
+        setDocdetails(doctorId);
 
     }
 
@@ -63,7 +67,7 @@ public class DoctorDetailsActivity extends AppCompatActivity {
         showCinics = (Button) findViewById(R.id.show_clinics);
     }
 
-    private void setShowCinics(ArrayList<Clinic> clinics) {
+    private void setShowCinics(final ArrayList<Clinic> clinics) {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
@@ -77,6 +81,17 @@ public class DoctorDetailsActivity extends AppCompatActivity {
 
         ListView clinicList = (ListView) row.findViewById(R.id.clinic_list);
         clinicList.setAdapter(new ClinicAdapter(this, clinics, slist));
+
+        clinicList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                Intent intent=new Intent(DoctorDetailsActivity.this,ClinicDetailsActivity.class)
+                        .putExtra("docId",doctorId)
+                        .putExtra("clinicId",clinics.get(position).id);
+                startActivity(intent);
+            }
+        });
 
         builder.create().show();
 
@@ -118,7 +133,6 @@ public class DoctorDetailsActivity extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
             }
         });
         VolleySingleton.getInstance().getRequestQueue().add(request);
