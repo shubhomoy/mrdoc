@@ -91,8 +91,7 @@ public class SearchActivity extends AppCompatActivity {
     public void fetchDoctorNames(CharSequence sequence) {
         doctors_name.removeAll(doctors_name);
         doctors_name.clear();
-        Log.d("option_se", sequence.toString());
-        String url = Config.apiUrl + "/search/doctors/?q=" + sequence.toString();
+        String url = Config.apiUrl + "/search/doctors?q=" + sequence.toString();
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
@@ -102,7 +101,6 @@ public class SearchActivity extends AppCompatActivity {
                     for (int i = 0; i < array.length(); i++) {
                         final Doctor doctor = gson.fromJson(array.getJSONObject(i).toString(), Doctor.class);
                         doctors_name.add(doctor);
-                        Log.d("option_name", doctors_name.get(0).name);
                     }
                     searchAdapters.notifyDataSetChanged();
 
@@ -118,7 +116,7 @@ public class SearchActivity extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
+                Log.d("option", error.toString());
             }
         });
         VolleySingleton.getInstance().getRequestQueue().add(request);
