@@ -7,7 +7,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.bitslate.mrdoc.MrDocObjects.Doctor;
 import com.bitslate.mrdoc.R;
+
+import java.util.ArrayList;
 
 /**
  * Created by vellapanti on 5/12/15.
@@ -15,8 +18,10 @@ import com.bitslate.mrdoc.R;
 public class SearchAdapters extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     Context context;
     LayoutInflater inflater;
-    public  SearchAdapters(Context context){
+    ArrayList<Doctor> doctors_name;
+    public  SearchAdapters(Context context,ArrayList<Doctor> doctors_name){
         this.context=context;
+        this.doctors_name=doctors_name;
         inflater=LayoutInflater.from(context);
     }
 
@@ -30,12 +35,14 @@ public class SearchAdapters extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-
+        DoctorViewHolder doctorViewHolder = (DoctorViewHolder)holder;
+        doctorViewHolder.docName.setText(doctors_name.get(position).name);
+        doctorViewHolder.docClinic.setText(doctors_name.get(position).address);
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        return doctors_name.size();
     }
 
     static class DoctorViewHolder extends RecyclerView.ViewHolder {
@@ -48,6 +55,7 @@ public class SearchAdapters extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
             docName = (TextView) itemView.findViewById(R.id.doc_name);
             docClinic = (TextView) itemView.findViewById(R.id.doc_clinic);
+
         }
     }
 }
