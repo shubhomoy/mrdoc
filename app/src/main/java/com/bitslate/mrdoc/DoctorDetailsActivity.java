@@ -65,7 +65,7 @@ public class DoctorDetailsActivity extends AppCompatActivity {
         docAddress = (TextView) findViewById(R.id.doctor_address);
         docPhone = (TextView) findViewById(R.id.doctor_phone);
         docDesc = (TextView) findViewById(R.id.doctor_details);
-        docEmail= (TextView) findViewById(R.id.doc_email);
+        docEmail = (TextView) findViewById(R.id.doc_email);
         regId = (TextView) findViewById(R.id.doc_reg_id);
         showCinics = (Button) findViewById(R.id.show_clinics);
         showSpec= (Button) findViewById(R.id.show_spec);
