@@ -63,7 +63,7 @@ public class DoctorDetailsActivity extends AppCompatActivity {
         docAddress = (TextView) findViewById(R.id.doctor_address);
         docPhone = (TextView) findViewById(R.id.doctor_phone);
         docDesc = (TextView) findViewById(R.id.doctor_details);
-        docEmail= (TextView) findViewById(R.id.doc_email);
+        docEmail = (TextView) findViewById(R.id.doc_email);
         regId = (TextView) findViewById(R.id.doc_reg_id);
         showCinics = (Button) findViewById(R.id.show_clinics);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -88,9 +88,9 @@ public class DoctorDetailsActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                Intent intent=new Intent(DoctorDetailsActivity.this,ClinicDetailsActivity.class)
-                        .putExtra("docId",doctorId)
-                        .putExtra("clinicId",clinics.get(position).id);
+                Intent intent = new Intent(DoctorDetailsActivity.this, ClinicDetailsActivity.class)
+                        .putExtra("docId", doctorId)
+                        .putExtra("clinicId", clinics.get(position).id);
                 startActivity(intent);
             }
         });

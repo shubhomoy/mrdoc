@@ -2,6 +2,7 @@ package com.bitslate.mrdoc;
 
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -11,6 +12,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -33,8 +36,10 @@ public class ClinicDetailsActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private Button bookTicket, facilities;
     private TextView clinicName, clinicAdd, clinicDetails, clinicEmail;
+    private ImageView mapView;
     ArrayList<String> facilitiesProvided;
     private static int clinicId, doctorId;
+    private double latitude, longitude;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +63,14 @@ public class ClinicDetailsActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });
+
+
+        mapView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setMapView();
+            }
+        });
     }
 
     private void instantiate() {
@@ -70,6 +83,7 @@ public class ClinicDetailsActivity extends AppCompatActivity {
         clinicDetails = (TextView) findViewById(R.id.clinic_details);
         facilitiesProvided = new ArrayList<String>();
         clinicEmail = (TextView) findViewById(R.id.email);
+        mapView = (ImageView) findViewById(R.id.map_view);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
@@ -87,6 +101,10 @@ public class ClinicDetailsActivity extends AppCompatActivity {
                     clinicAdd.setText(clinic.address);
                     clinicDetails.setText(clinic.description);
                     clinicEmail.setText(clinic.email);
+                    latitude = clinic.x_coord;
+                    longitude = clinic.y_coord;
+
+
                     facilities.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -118,6 +136,13 @@ public class ClinicDetailsActivity extends AppCompatActivity {
             }
         });
         VolleySingleton.getInstance().getRequestQueue().add(request);
+    }
+
+
+    private void setMapView() {
+        String url = "http://maps.google.com/maps?daddr="+latitude+","+longitude;
+        Intent intent = new Intent(android.content.Intent.ACTION_VIEW, Uri.parse(url));
+        startActivity(intent);
     }
 
     @Override
