@@ -18,7 +18,7 @@ public class Doctor {
 
     public ArrayList<Contacts> contacts;
     public ArrayList<Clinic> clinics;
-
+    public ArrayList<Specializations> specializations;
     public class Contacts{
         public String contact_no;
     }

@@ -3,8 +3,8 @@
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:background="#dedede"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#dedede">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -38,7 +38,6 @@
                     android:id="@+id/doctor_photo"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
-                    android:layout_below="@+id/toolbar"
                     android:layout_margin="16dp"
                     android:src="@mipmap/ic_launcher" />
 
@@ -46,7 +45,6 @@
                     android:id="@+id/doc_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/toolbar"
                     android:layout_marginLeft="30dp"
                     android:layout_marginTop="30dp"
                     android:layout_toRightOf="@+id/doctor_photo"
@@ -93,11 +91,22 @@
             android:text="Show Clinics"
             android:textSize="15sp" />
 
+        <Button
+            android:id="@+id/show_spec"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/show_clinics"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center_horizontal"
+            android:background="?attr/selectableItemBackground"
+            android:text="Show Specializations"
+            android:textSize="15sp" />
+
         <android.support.v7.widget.CardView
             android:id="@+id/cardView_detail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/show_clinics"
+            android:layout_below="@+id/show_spec"
             android:layout_marginBottom="16dp"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
@@ -132,8 +141,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/view1"
-                    android:padding="16dp"
                     android:autoLink="email"
+                    android:padding="16dp"
                     android:text="abc.xyz@gmail.com"
                     android:textSize="15sp" />
 

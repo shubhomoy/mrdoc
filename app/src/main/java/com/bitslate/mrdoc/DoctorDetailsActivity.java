@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -22,6 +23,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.bitslate.mrdoc.MrDocAdapters.ClinicAdapter;
 import com.bitslate.mrdoc.MrDocObjects.Clinic;
 import com.bitslate.mrdoc.MrDocObjects.Doctor;
+import com.bitslate.mrdoc.MrDocObjects.Specializations;
 import com.bitslate.mrdoc.MrDocUtilities.Config;
 import com.bitslate.mrdoc.MrDocUtilities.VolleySingleton;
 import com.google.gson.Gson;
@@ -36,9 +38,9 @@ public class DoctorDetailsActivity extends AppCompatActivity {
     Toolbar toolbar;
     private ImageView doctorImage;
     private TextView docName, docAddress, docPhone, docDesc, regId, docEmail;
-    private Button showCinics;
+    private Button showCinics,showSpec;
     private static int doctorId;
-
+    Doctor doctor;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,7 +68,9 @@ public class DoctorDetailsActivity extends AppCompatActivity {
         docEmail= (TextView) findViewById(R.id.doc_email);
         regId = (TextView) findViewById(R.id.doc_reg_id);
         showCinics = (Button) findViewById(R.id.show_clinics);
+        showSpec= (Button) findViewById(R.id.show_spec);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        doctor=new Doctor();
     }
 
     private void setShowCinics(final ArrayList<Clinic> clinics) {
@@ -88,9 +92,9 @@ public class DoctorDetailsActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                Intent intent=new Intent(DoctorDetailsActivity.this,ClinicDetailsActivity.class)
-                        .putExtra("docId",doctorId)
-                        .putExtra("clinicId",clinics.get(position).id);
+                Intent intent = new Intent(DoctorDetailsActivity.this, ClinicDetailsActivity.class)
+                        .putExtra("docId", doctorId)
+                        .putExtra("clinicId", clinics.get(position).id);
                 startActivity(intent);
             }
         });
@@ -98,15 +102,31 @@ public class DoctorDetailsActivity extends AppCompatActivity {
         builder.create().show();
 
     }
+    private void showSpec(ArrayList<Specializations> list){
+                AlertDialog.Builder builder1 = new AlertDialog.Builder(DoctorDetailsActivity.this);
+                LayoutInflater inflater = LayoutInflater.from(DoctorDetailsActivity.this);
+                View row = inflater.inflate(R.layout.custom_show_clinics, null);
+                ArrayList<String> sp=new ArrayList<>();
+        builder1.setView(row);
+                ListView view = (ListView) row.findViewById(R.id.clinic_list);
+                for (int i = 0; i < list.size(); i++) {
+                    sp.add(list.get(i).detail);
+                }
+                ArrayAdapter<String> adapter = new ArrayAdapter<String>(DoctorDetailsActivity.this, android.R.layout.simple_list_item_1, sp);
+        view.setAdapter(adapter);
 
+                builder1.create().show();
+
+
+
+    }
     private void setDocdetails(int id) {
 
         String url = Config.apiUrl + "/doctor/" + id;
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-
-                Log.d("data", response.toString());
+;
                 try {
                     Gson gson = new Gson();
                     final Doctor doctor = gson.fromJson(response.getString("doctor"), Doctor.class);
@@ -126,6 +146,12 @@ public class DoctorDetailsActivity extends AppCompatActivity {
                         @Override
                         public void onClick(View v) {
                             setShowCinics(doctor.clinics);
+                        }
+                    });
+                    showSpec.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            showSpec(doctor.specializations);
                         }
                     });
 
